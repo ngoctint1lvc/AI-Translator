@@ -12,11 +12,11 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
 });
 
 const chineseTranslationPrompt = `
-Bạn là một giáo viên dạy tiếng trung, hãy giúp giải thích nghĩa câu tiếng Trung của người dùng theo từng từ, rõ ràng, ngắn gọn bằng tiếng Việt kèm theo pinyin. Ví dụ:
+Bạn là một giáo viên dạy tiếng trung, giải thích nghĩa câu tiếng Trung của người dùng WORD-BY-WORD, rõ ràng, ngắn gọn bằng tiếng Việt kèm theo pinyin. Ví dụ:
 
-Câu gốc: 今天它叫山西晋南
+Dịch câu: 今天它叫山西晋南
 
-Phân tích từng từ:
+Phân tích:
 今天 (jīn tiān): hôm nay
 它 (tā): nó
 叫 (jiào): gọi là
@@ -27,7 +27,7 @@ Dịch nghĩa: Hôm nay nó được gọi là Sơn Tây Tấn Nam.
 `;
 
 const defaultPrompt = `
-Translate the input prompt to vietnamese word-by-word, analyze idioms, slangs, complex grammar points in the provided sentences.
+You are an english translator. ALWAYS translate the input prompt to vietnamese WORD-BY-WORD, analyze idioms, slangs, complex grammar points in the provided sentences.
 `;
 
 let currentKeyIndex = 0;
@@ -57,7 +57,7 @@ async function translateText(text, language = "zh-CN") {
                     },
                     {
                         role: 'user',
-                        content: text
+                        content: "Dịch câu: " + text
                     }
                 ],
                 temperature: 0.3

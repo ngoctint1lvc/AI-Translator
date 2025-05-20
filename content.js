@@ -14,6 +14,8 @@ function createPopupContainer() {
     z-index: 1000000 !important;
     font-family: Arial, sans-serif;
     display: none;
+    overflow: auto;
+    max-height: 90vh;
   `;
     document.body.appendChild(container);
     return container;
@@ -98,34 +100,42 @@ function updateTranslationPopup(translation) {
     }
 }
 
-let isKeyPressed = false;
+let hasModifierKeys = false;
 document.addEventListener('keydown', function (event) {
     // Check if the pressed key is 'g' or 'G' and no modifier keys are pressed
     if ((event.key === 'h' || event.key === 'H') &&
-        !event.ctrlKey &&
-        !event.metaKey &&
-        !event.altKey &&
-        !event.shiftKey) {
-        isKeyPressed = true;
+        (event.ctrlKey || event.metaKey || event.altKey || event.shiftKey)) {
+        hasModifierKeys = true;
     }
 });
 
 document.addEventListener('keyup', function (event) {
-    if (isKeyPressed && (event.key === 'h' || event.key === 'H')) {
+    if (event.key === 'h' || event.key === 'H') {
+        if (hasModifierKeys) {
+            hasModifierKeys = false;
+            return;
+        }
+
         // if the translation popup is already open, close it
         let translationPopup = document.getElementById('ai-translator-popup');
         if (translationPopup) {
             translationPopup.remove();
-            isKeyPressed = false;
             return;
         }
 
         const selectedText = window.getSelection().toString().trim();
         if (selectedText) {
+            let isChinese = /[\u4E00-\u9FFF]/.test(selectedText);
+            let maxLength = isChinese ? 50: 150;
+            if (selectedText.length > maxLength) {
+                // notify user that the text is too long
+                alert("Text is too long, please select a shorter text.");
+                return;
+            }
+
             // Show popup immediately with loading state
             showTranslationPopup(selectedText);
 
-            let isChinese = /[\u4E00-\u9FFF]/.test(selectedText);
             // Send message to background script for translation
             chrome.runtime.sendMessage({
                 action: 'translate',
@@ -139,6 +149,68 @@ document.addEventListener('keyup', function (event) {
                 }
             });
         }
-        isKeyPressed = false;
     }
-}); 
+});
+
+// Listen for messages from the injected AITranslator object
+window.addEventListener('message', function (event) {
+    // console.log("[DEBUG] event", event);
+    if (event.source !== window) {
+        return;
+    }
+    if (event.data && event.data.type === 'AITranslatorRequest') {
+        const { requestId, text } = event.data;
+
+        // if the translation popup is already open, close it
+        let translationPopup = document.getElementById('ai-translator-popup');
+        if (translationPopup) {
+            translationPopup.remove();
+            return;
+        }
+
+        let isChinese = /[\u4E00-\u9FFF]/.test(text);
+        let maxLength = isChinese ? 50: 150;
+        if (text.length > maxLength) {
+            // notify user that the text is too long
+            alert("Text is too long, please select a shorter text.");
+            return;
+        }
+        
+        // Show popup with loading state
+        showTranslationPopup(text);
+        
+        // Send message to background script for translation
+        chrome.runtime.sendMessage({
+            action: 'translate',
+            text: text,
+            language: isChinese ? 'zh-CN' : 'en-US'
+        }, (response) => {
+            // Update the popup
+            if (response && response.translation) {
+                updateTranslationPopup(response.translation);
+            } else if (response && response.error) {
+                updateTranslationPopup(response.error);
+            }
+
+            // Send response back to the webpage
+            window.postMessage({
+                type: 'AITranslatorResponse',
+                requestId: requestId,
+                success: true,
+            }, window.location.origin);
+        });
+    }
+});
+
+// Inject the AITranslator object
+function injectAITranslator() {
+    const script = document.createElement('script');
+    script.src = chrome.runtime.getURL('inject.js');
+    script.onload = function() {
+        script.remove();
+    };
+    (document.head || document.documentElement).appendChild(script);
+}
+
+// Inject as soon as possible
+injectAITranslator();

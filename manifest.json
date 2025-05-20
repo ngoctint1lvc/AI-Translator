@@ -31,14 +31,16 @@
             ],
             "js": [
                 "content.js"
-            ]
+            ],
+            "run_at": "document_start"
         }
     ],
     "web_accessible_resources": [
         {
             "resources": [
                 "translation-popup.html",
-                "translation-popup.js"
+                "translation-popup.js",
+                "inject.js"
             ],
             "matches": [
                 "<all_urls>"
