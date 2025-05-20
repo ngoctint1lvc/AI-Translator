@@ -2,6 +2,10 @@
 
 A Chrome extension that allows you to translate selected text using ChatGPT. The extension provides detailed translations with pinyin and explanations in Vietnamese.
 
+## Demo
+
+![Demo](./images/demo.png)
+
 ## Features
 
 - Select any text and press the `H` key to translate
