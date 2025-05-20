@@ -12,6 +12,7 @@ A Chrome extension that allows you to translate selected text using ChatGPT. The
 - Support for multiple OpenAI API keys with automatic rotation
 - Detailed translations with pinyin and explanations for Chinese
 - Easy-to-use popup interface for managing API keys
+- `AITranslator.translate()` interface is injected into the page, you can use it with Tampermonkey
 
 ## Installation
 
@@ -26,7 +27,7 @@ A Chrome extension that allows you to translate selected text using ChatGPT. The
 2. Add your OpenAI API key(s) in the popup
 3. Select any text on a webpage
 4. Press the `H` key
-5. The translation will appear in a notification
+5. The translation UI will appear, you can press `H` again to close it
 
 ## API Key Management
 
@@ -34,11 +35,6 @@ A Chrome extension that allows you to translate selected text using ChatGPT. The
 - The extension will automatically switch to the next key if one fails
 - API keys are stored securely in Chrome's storage
 - You can delete API keys at any time through the popup interface
-
-## Requirements
-
-- Chrome browser
-- OpenAI API key(s)
 
 ## Note
 
