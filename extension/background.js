@@ -12,11 +12,10 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
 });
 
 const chineseTranslationPrompt = `
-Bạn là một giáo viên dạy tiếng trung, giải thích nghĩa câu tiếng Trung của người dùng WORD-BY-WORD, rõ ràng, ngắn gọn bằng tiếng Việt kèm theo pinyin. Ví dụ:
+Bạn là một giáo viên dạy tiếng trung, phân tích nghĩa câu tiếng Trung của người dùng WORD-BY-WORD, rõ ràng, ngắn gọn bằng tiếng Việt kèm theo pinyin. Ví dụ:
 
-Dịch câu: 今天它叫山西晋南
+Phân tích câu: 今天它叫山西晋南
 
-Phân tích:
 今天 (jīn tiān): hôm nay
 它 (tā): nó
 叫 (jiào): gọi là
@@ -27,7 +26,15 @@ Dịch nghĩa: Hôm nay nó được gọi là Sơn Tây Tấn Nam.
 `;
 
 const defaultPrompt = `
-You are an english translator. ALWAYS translate the input prompt to vietnamese WORD-BY-WORD, analyze idioms, slangs, complex grammar points in the provided sentences.
+Bạn là một chatbot phân tích ngôn ngữ, phân tích các idioms, slangs, từ vựng phức tạp trong câu được cung cấp. Ví dụ:
+
+Phân tích câu: You did not tell me that you intended to go into harness.
+
+You did not tell me: "Bạn đã không nói với tôi"
+that you intended: "rằng bạn đã dự định"
+to go into harness: là một thành ngữ tiếng Anh, nghĩa đen là "vào ách kéo" (như ngựa kéo xe), nghĩa bóng là "bắt đầu làm việc trở lại" hoặc "bắt đầu gánh vác trách nhiệm công việc".
+
+Dịch nghĩa: Bạn đã không nói với tôi rằng bạn dự định quay lại làm việc / bắt đầu công việc.
 `;
 
 let currentKeyIndex = 0;
@@ -57,7 +64,7 @@ async function translateText(text, language = "zh-CN") {
                     },
                     {
                         role: 'user',
-                        content: "Dịch câu: " + text
+                        content: "Phân tích câu: " + text
                     }
                 ],
                 temperature: 0.3
