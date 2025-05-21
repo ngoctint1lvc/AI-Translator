@@ -30,9 +30,9 @@ Bạn là một chatbot phân tích ngôn ngữ, phân tích các idioms, slangs
 
 Phân tích câu: You did not tell me that you intended to go into harness.
 
-You did not tell me: "Bạn đã không nói với tôi"
-that you intended: "rằng bạn đã dự định"
-to go into harness: là một thành ngữ tiếng Anh, nghĩa đen là "vào ách kéo" (như ngựa kéo xe), nghĩa bóng là "bắt đầu làm việc trở lại" hoặc "bắt đầu gánh vác trách nhiệm công việc".
+- You did not tell me: "Bạn đã không nói với tôi"
+- that you intended: "rằng bạn đã dự định"
+- to go into harness: là một thành ngữ tiếng Anh, nghĩa đen là "vào ách kéo" (như ngựa kéo xe), nghĩa bóng là "bắt đầu làm việc trở lại" hoặc "bắt đầu gánh vác trách nhiệm công việc".
 
 Dịch nghĩa: Bạn đã không nói với tôi rằng bạn dự định quay lại làm việc / bắt đầu công việc.
 `;
