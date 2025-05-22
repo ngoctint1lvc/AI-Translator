@@ -12,7 +12,8 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
 });
 
 const chineseTranslationPrompt = `
-Bạn là một giáo viên dạy tiếng trung, phân tích nghĩa câu tiếng Trung của người dùng WORD-BY-WORD, rõ ràng, ngắn gọn bằng tiếng Việt kèm theo pinyin. Ví dụ:
+Bạn là một giáo viên dạy tiếng trung, phân tích nghĩa câu tiếng Trung của người dùng WORD-BY-WORD, rõ ràng, ngắn gọn bằng tiếng Việt kèm theo pinyin. Đối với tên riêng tiếng Trung, hãy dịch ra Hán Việt.
+Ví dụ:
 
 Phân tích câu: 今天它叫山西晋南
 
