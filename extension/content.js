@@ -110,6 +110,15 @@ document.addEventListener('keydown', function (event) {
 });
 
 document.addEventListener('keyup', function (event) {
+    const activeElement = document.activeElement;
+    if (activeElement && (
+        activeElement.isContentEditable ||
+        activeElement.nodeName === "TEXTAREA" ||
+        activeElement.nodeName === "INPUT" ||
+        activeElement.nodeName === "FORM" ||
+        activeElement.nodeName === "SELECT"
+    )) return;
+
     if (event.key === 'h' || event.key === 'H') {
         if (hasModifierKeys) {
             hasModifierKeys = false;
